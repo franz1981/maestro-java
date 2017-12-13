@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 public class RatePlotter implements Plotter {
     private static final Logger logger = LoggerFactory.getLogger(RatePlotter.class);
@@ -52,14 +53,13 @@ public class RatePlotter implements Plotter {
 
             // Plotter
             net.orpiske.mdp.plot.RatePlotter plotter = new net.orpiske.mdp.plot.RatePlotter(FilenameUtils.removeExtension(baseName));
-            logger.debug("Number of records to plot: {} ", rateData.getRatePeriods().size());
-//            for (Date d : rateData.getRatePeriods()) {
-//                logger.debug("Adding date record for plotting: {}", d);
-//            }
-
+            final List<Date> ratePeriods = rateData.getRatePeriods();
+            if(logger.isDebugEnabled()) {
+                logger.debug("Number of records to plot: {} ", ratePeriods.size());
+            }
             plotter.setOutputWidth(1024);
             plotter.setOutputHeight(600);
-            plotter.plot(rateData.getRatePeriods(), rateData.getRateValues());
+            plotter.plot(ratePeriods, rateData.getRateValues());
 
             RatePropertyWriter.write(rateData, file.getParentFile());
 
